@@ -533,7 +533,7 @@ static void update_status(UIState *s) {
   Params params;
 
   //opkr navi on boot
-  if (!s->scene.navi_on_boot && (s->sm->frame - s->scene.started_frame > 5*UI_FREQ)) {
+  if (!s->scene.navi_on_boot && (s->sm->frame - s->scene.started_frame > 20*UI_FREQ)) {
     if (params.getBool("OpkrRunNaviOnBoot") && params.getBool("ControlsReady") && (params.get("CarParams").size() > 0)) {
       s->scene.navi_on_boot = true;
       s->scene.map_is_running = true;
@@ -541,11 +541,11 @@ static void update_status(UIState *s) {
       s->scene.map_on_overlay = false;
       params.putBool("OpkrMapEnable", true);
       if (s->scene.navi_select == 1) {
-        system("am start com.mnsoft.mappyobn/com.mnsoft.mappy.MainActivity");
+        system("LD_LIBRARY_PATH= am start com.mnsoft.mappyobn/com.mnsoft.mappy.MainActivity");
       } else if (s->scene.navi_select == 2) {
-        system("am start com.thinkware.inaviair/com.thinkware.inaviair.UIActivity");
+        system("LD_LIBRARY_PATH= am start com.thinkware.inaviair/com.thinkware.inaviair.UIActivity");
       } else if (s->scene.navi_select == 3) {
-        system("am start com.waze/com.waze.MainActivity");
+        system("LD_LIBRARY_PATH= am start com.waze/com.waze.MainActivity");
       }
     } else if (s->sm->frame - s->scene.started_frame > 20*UI_FREQ) {
       s->scene.navi_on_boot = true;
@@ -556,7 +556,7 @@ static void update_status(UIState *s) {
       s->scene.move_to_background = true;
       s->scene.map_on_top = false;
       s->scene.map_on_overlay = true;
-      system("am start --activity-task-on-home com.opkr.maphack/com.opkr.maphack.MainActivity");
+      system("LD_LIBRARY_PATH= am start --activity-task-on-home com.opkr.maphack/com.opkr.maphack.MainActivity");
     } else if (s->sm->frame - s->scene.started_frame > 30*UI_FREQ) {
       s->scene.move_to_background = true;
     }
@@ -579,7 +579,7 @@ static void update_status(UIState *s) {
       s->scene.waze_stop2 = false;
       s->scene.map_on_top = false;
       s->scene.map_on_overlay = true;
-      system("am start --activity-task-on-home com.opkr.maphack/com.opkr.maphack.MainActivity");
+      system("LD_LIBRARY_PATH= am start --activity-task-on-home com.opkr.maphack/com.opkr.maphack.MainActivity");
     } else if (!s->scene.waze_stop && !s->scene.waze_stop2 && s->scene.liveNaviData.wazealertdistance < 200 && s->scene.liveNaviData.wazealertdistance > 0) {
       s->scene.waze_stop = false;
       s->scene.waze_stop2 = true;
